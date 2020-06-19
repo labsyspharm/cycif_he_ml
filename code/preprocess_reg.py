@@ -21,3 +21,6 @@ if __name__ == '__main__':
             .astype(he.dtype)
     he = img_as_uint(he)
     io.imsave('../data/he_small.tif', he)
+
+    he_inv = 255-he
+    io.imsave('../data/he_small_inv.tif', he_inv)
