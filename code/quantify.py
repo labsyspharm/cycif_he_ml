@@ -6,12 +6,10 @@ import tifffile
 from skimage import measure
 
 if __name__ == '__main__':
-    mask = tifffile.imread('../data/cellRingMask_downscaled.tif')
+    mask = tifffile.imread('../data/aligned_cellmask.tif')
     dna6 = tifffile.imread('../data/aligned_DNA6.tif')
     cd20 = tifffile.imread('../data/aligned_CD20.tif')
     cd20_bin = tifffile.imread('../data/aligned_CD20_binmask.tif')
-
-    mask = mask[:dna6.shape[0], :dna6.shape[1]]
 
     col = {'DNA6': dna6, 'CD20': cd20, 'CD20_bin': cd20_bin}
     df_list = []

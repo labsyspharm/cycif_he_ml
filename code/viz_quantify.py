@@ -6,7 +6,7 @@ from scipy import stats
 if __name__ == '__main__':
     df = pd.read_csv('../data/aligned_feature.csv')
     X = df.sample(n=int(1e4))\
-            [['DNA6', 'CD20']].values
+            [['DNA6', 'CD20_bin']].values
     d = stats.gaussian_kde(X.T)(X.T)
     sk = np.argsort(d)
     X, d = X[sk, :], d[sk]
