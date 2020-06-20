@@ -1,3 +1,5 @@
+import functools
+
 import pandas as pd
 import tifffile
 
@@ -7,16 +9,21 @@ if __name__ == '__main__':
     mask = tifffile.imread('../data/cellRingMask_downscaled.tif')
     dna6 = tifffile.imread('../data/aligned_DNA6.tif')
     cd20 = tifffile.imread('../data/aligned_CD20.tif')
+    cd20_bin = tifffile.imread('../data/aligned_CD20_binmask.tif')
 
     mask = mask[:dna6.shape[0], :dna6.shape[1]]
 
-    p = measure.regionprops_table(label_image=mask, intensity_image=dna6,
-            properties=['label', 'mean_intensity'])
-    df1 = pd.DataFrame(p).rename(columns={'mean_intensity': 'DNA6'})
+    col = {'DNA6': dna6, 'CD20': cd20, 'CD20_bin': cd20_bin}
+    df_list = []
+    for k in col:
+        p = measure.regionprops_table(
+                label_image=mask,
+                intensity_image=col[k],
+                properties=['label', 'mean_intensity'],
+                )
+        df = pd.DataFrame(p).rename(columns={'mean_intensity': k})
+        df_list.append(df)
 
-    p = measure.regionprops_table(label_image=mask, intensity_image=cd20,
-            properties=['label', 'mean_intensity'])
-    df2 = pd.DataFrame(p).rename(columns={'mean_intensity': 'CD20'})
-
-    df = df1.merge(df2, on='label', how='inner')
+    df = functools.reduce(lambda x,y: x.merge(y, on='label', how='inner'),
+            df_list)
     df.to_csv('../data/aligned_feature.csv', index=False)
