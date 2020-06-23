@@ -4,11 +4,11 @@ from dask_image import ndfilters
 
 def _window_sum_2d(image, window_shape):
 
-    window_sum = np.cumsum(image, axis=0)
+    window_sum = da.cumsum(image, axis=0)
     window_sum = (window_sum[window_shape[0]:-1]
                   - window_sum[:-window_shape[0] - 1])
 
-    window_sum = np.cumsum(window_sum, axis=1)
+    window_sum = da.cumsum(window_sum, axis=1)
     window_sum = (window_sum[:, window_shape[1]:-1]
                   - window_sum[:, :-window_shape[1] - 1])
 
@@ -19,7 +19,7 @@ def _window_sum_3d(image, window_shape):
 
     window_sum = _window_sum_2d(image, window_shape)
 
-    window_sum = np.cumsum(window_sum, axis=2)
+    window_sum = da.cumsum(window_sum, axis=2)
     window_sum = (window_sum[:, :, window_shape[2]:-1]
                   - window_sum[:, :, :-window_shape[2] - 1])
 
@@ -31,7 +31,7 @@ def match_template(image, template, pad_input=False, mode='constant',
     if image.ndim < template.ndim:
         raise ValueError("Dimensionality of template must be less than or "
                          "equal to the dimensionality of image.")
-    if np.any(np.less(image.shape, template.shape)):
+    if da.any(np.less(image.shape, template.shape)):
         raise ValueError("Image must be larger than template.")
 
     image_shape = image.shape
@@ -55,7 +55,7 @@ def match_template(image, template, pad_input=False, mode='constant',
 
     template_mean = template.mean()
     template_volume = np.prod(template.shape)
-    template_ssd = np.sum((template - template_mean) ** 2)
+    template_ssd = da.sum((template - template_mean) ** 2)
 
     indent = [d//2+1 for d in template.shape]
     if image.ndim == 2:
@@ -73,10 +73,8 @@ def match_template(image, template, pad_input=False, mode='constant',
     np.divide(image_window_sum, template_volume, out=image_window_sum)
     denominator -= image_window_sum
     denominator *= template_ssd
-    np.maximum(denominator, 0, out=denominator)  # sqrt of negative number not allowed
-    np.sqrt(denominator, out=denominator)
-
-#    response = da.zeros_like(xcorr, dtype=np.float64)
+    da.maximum(denominator, 0, out=denominator)  # sqrt of negative number not allowed
+    da.sqrt(denominator, out=denominator)
 
     # avoid zero-division
     # dask hasn't supported fancy indexing, so here's a workaround
@@ -84,8 +82,6 @@ def match_template(image, template, pad_input=False, mode='constant',
     numerator[mask] = 0.0
     denominator[mask] = 1.0
     response = numerator / denominator
-
-#    response[mask] = numerator[mask] / denominator[mask]
 
     slices = []
     for i in range(template.ndim):
