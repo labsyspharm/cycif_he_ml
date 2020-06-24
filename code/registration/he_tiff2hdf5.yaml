@@ -1,0 +1,5 @@
+in_filepath: ../../data/raw_data/TNP_96.ome.tif
+out_filepath: ../../data/derived_data/fullres_channels/TNP_96.hdf5
+chunk_size: [1000, 1000]
+channel_names: [r, g, b]
+overwrite: True

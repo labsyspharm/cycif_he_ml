@@ -1,0 +1,5 @@
+in_filepath: ../../data/derived_data/fullres_channels/TNP_96.hdf5
+out_filepath: ../../data/derived_data/fullres_channels/TNP_96_gray.hdf5
+chunk_size: [5000, 5000]
+rgb_names: [r, g, b]
+overwrite: True
