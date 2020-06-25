@@ -1,7 +1,8 @@
-in1_filepath: ../../data/derived_data/fullres_channels/WD-76845-097.hdf5
+in1_filepath: ../../data/derived_data/hdf5/WD-76845-097.hdf5
 in1_name: DNA1
-in2_filepath: ../../data/derived_data/fullres_channels/TNP_96_gray.hdf5
+in1_chunk_size: [100, 100]
+in2_filepath: ../../data/derived_data/hdf5/TNP_96_gray.hdf5
 in2_name: gray
+in2_chunk_size: [5000, 5000]
 out_filepath: ../../data/derived_data/response.hdf5
-chunk_size: [1000, 1000]
 overwrite: True
