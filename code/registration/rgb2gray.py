@@ -1,10 +1,11 @@
 import os
 import sys
+import yaml
 
 import numpy as np
 import h5py
 import dask.array as da
-from skimage import color
+from skimage import color, img_as_ubyte
 
 if __name__ == '__main__':
     # parse config
@@ -25,7 +26,7 @@ if __name__ == '__main__':
     # convert blockwise
     def rgb2gray(r, g, b):
         rgb = np.stack([r, g, b], axis=-1)
-        return color.rgb2gray(rgb)
+        return img_as_ubyte(color.rgb2gray(rgb))
     gray_img = da.map_blocks(rgb2gray, *arr_list, dtype=np.uint8,
             chunks=arr_list[0].chunks)
 
