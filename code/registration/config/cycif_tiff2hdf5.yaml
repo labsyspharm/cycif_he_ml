@@ -1,0 +1,5 @@
+in_filepath: ../../data/raw_data/WD-76845-097.ome.tif
+out_filepath: ../../data/derived_data/fullres_channels/WD-76845-097.hdf5
+chunk_size: [1000, 1000]
+channel_names: ../../data/derived_data/markers.csv
+overwrite: True

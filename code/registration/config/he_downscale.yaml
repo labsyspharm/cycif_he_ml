@@ -1,0 +1,5 @@
+in_filepath: ../../data/derived_data/hdf5/TNP_96.hdf5
+out_filepath: ../../data/derived_data/hdf5/TNP_96_downscaled.hdf5
+chunk_size: [5000, 5000]
+factors: [2, 2]
+overwrite: True
