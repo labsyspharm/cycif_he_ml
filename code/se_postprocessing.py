@@ -1,7 +1,7 @@
 import numpy as np
 import fire
 
-from skimage import io
+from skimage import io, util
 
 def se_postprocessing(in_filepath: str, out_filepath: str, dtype: str):
     '''
