@@ -11,7 +11,7 @@ export WORK_DIRPATH="$5"
 export CYCIF_AF_CHANNELS="[DNA1,bg2a,bg3a,bg4a]"
 
 # less critical params
-export CHUNKSIZE="(1000, 1000)"
+export CHUNKSIZE="[1000,1000]"
 export FINAL_DTYPE="uint16"
 
 # intermediate file paths
@@ -28,7 +28,7 @@ python tiff2hdf5.py\
     --in_filepath $CYCIF_OMETIF_FILEPATH\
     --out_filepath $CYCIF_H5_FILEPATH\
     --chunk_size $CHUNKSIZE\
-    --channel_names $CYCIF_H5_FILEPATH\
+    --channel_names $CYCIF_MARKER_FILEPATH\
     --overwrite "True"
 
 python tiff2hdf5.py\
