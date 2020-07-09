@@ -2,7 +2,7 @@ import SimpleITK as sitk
 import fire
 
 
-def se_fit(fixed_filepath: str, moving_filepath: str, out_filepath: str,
+def se_fit(fixed_filepath: str, moving_filepath: str, out_filepath: str=None,
         nres: int=4, niter: int=256):
     '''
     Register one image to another using intensity-based affine transformation
@@ -40,7 +40,8 @@ def se_fit(fixed_filepath: str, moving_filepath: str, out_filepath: str,
     out = img_filter.GetResultImage()
 
     # save output to disk
-    sitk.WriteImage(out, out_filepath)
+    if out_filepath is not None:
+        sitk.WriteImage(out, out_filepath)
 
 
 if __name__ == '__main__':
