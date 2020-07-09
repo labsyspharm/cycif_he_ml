@@ -9,10 +9,14 @@ import dask.array as da
 from skimage import color, util
 
 
-def rgb2gray(in_filepath: str, out_filepath: str,
-        channel_names: typing.List[str], dtype: str='float64',
-        overwrite: bool=False):
-    '''
+def rgb2gray(
+    in_filepath: str,
+    out_filepath: str,
+    channel_names: typing.List[str],
+    dtype: str = "float64",
+    overwrite: bool = False,
+):
+    """
     Convert RGB image in HDF5 format to gray-scale.
 
     Args:
@@ -26,27 +30,29 @@ def rgb2gray(in_filepath: str, out_filepath: str,
             uint16, float32, float64.
         overwrite: bool [optional]
             Overwrite the output file if already exists, default False.
-    '''
+    """
     # check dtype argument
-    if dtype == 'bool':
+    if dtype == "bool":
         cast_fn = util.img_as_bool
-    elif dtype == 'uint8':
+    elif dtype == "uint8":
         cast_fn = util.img_as_ubyte
-    elif dtype == 'int16':
+    elif dtype == "int16":
         cast_fn = util.img_as_int
-    elif dtype == 'uint16':
+    elif dtype == "uint16":
         cast_fn = util.img_as_uint
-    elif dtype == 'float32':
+    elif dtype == "float32":
         cast_fn = util.img_as_float32
-    elif dtype == 'float64':
+    elif dtype == "float64":
         cast_fn = util.img_as_float64
     else:
-        raise NotImplementedError('dtype {} not recognized. Currently accepted'
-                'formats are bool, uint8, int16, uint16, float32, float64.'
-                .format(dtype))
+        raise NotImplementedError(
+            "dtype {} not recognized. Currently accepted"
+            "formats are bool, uint8, int16, uint16, float32, float64."
+            .format(dtype)
+        )
 
     # load data as dask array
-    f = h5py.File(in_filepath, 'r')
+    f = h5py.File(in_filepath, "r")
     arr_list = [da.from_array(f[ch]) for ch in channel_names[:3]]
 
     # convert blockwise
@@ -57,13 +63,13 @@ def rgb2gray(in_filepath: str, out_filepath: str,
         return gray
 
     gray_img = da.map_blocks(fn, *arr_list, dtype=dtype,
-            chunks=arr_list[0].chunks)
+                             chunks=arr_list[0].chunks)
 
     # save to disk
     if overwrite and os.path.isfile(out_filepath):
         os.remove(out_filepath)
-    da.to_hdf5(out_filepath, '/gray', gray_img)
+    da.to_hdf5(out_filepath, "/gray", gray_img)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     fire.Fire(rgb2gray)

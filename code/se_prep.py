@@ -7,10 +7,14 @@ import numpy as np
 import dask.array as da
 
 
-def maxproj2tiff(in_filepath: str, out_filepath: str,
-        channel_names: typing.Any=None,
-        flip: bool=False, overwrite: bool=False):
-    '''
+def maxproj2tiff(
+    in_filepath: str,
+    out_filepath: str,
+    channel_names: typing.Any = None,
+    flip: bool = False,
+    overwrite: bool = False,
+):
+    """
     Maximum projection over channels of HDF5 and save to disk as TIFF.
 
     Args:
@@ -21,14 +25,14 @@ def maxproj2tiff(in_filepath: str, out_filepath: str,
             to a text file where each line is the name of a channel.
         overwrite: bool [optional]
             Overwrite the output file if already exists, default False.
-    '''
+    """
     # parse channel names
     if isinstance(channel_names, str):
-        with open(channel_names, 'r') as f:
+        with open(channel_names, "r") as f:
             channel_names = [line.strip() for line in f]
 
     # load data
-    f = h5py.File(in_filepath, 'r')
+    f = h5py.File(in_filepath, "r")
 
     # allowing same API for images not need maximum projection
     # but still need to be saved as TIFF
@@ -42,7 +46,7 @@ def maxproj2tiff(in_filepath: str, out_filepath: str,
     if flip:
         try:
             dtype = np.iinfo(arr.dtype)
-        except:
+        except ValueError:
             dtype = np.finfo(arr.dtype)
         arr = dtype.max - arr
 
@@ -50,5 +54,5 @@ def maxproj2tiff(in_filepath: str, out_filepath: str,
     tifffile.imsave(out_filepath, arr)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     fire.Fire(maxproj2tiff)
