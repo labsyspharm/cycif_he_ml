@@ -9,7 +9,7 @@ import dask.array as da
 
 def maxproj2tiff(in_filepath: str, out_filepath: str,
         channel_names: typing.Any=None,
-        flip: bool: False, overwrite: bool=False):
+        flip: bool=False, overwrite: bool=False):
     '''
     Maximum projection over channels of HDF5 and save to disk as TIFF.
 
