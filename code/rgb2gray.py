@@ -1,9 +1,10 @@
 import os
 import typing
 
-import h5py
-import dask.array as da
 import fire
+import h5py
+import numpy as np
+import dask.array as da
 
 from skimage import color, util
 
