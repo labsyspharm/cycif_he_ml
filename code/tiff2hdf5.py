@@ -1,8 +1,7 @@
 import os
 import typing
 
-import dask
-import dask.array as da
+import h5py
 import tifffile
 import fire
 
@@ -32,6 +31,8 @@ def tiff2hdf5(in_filepath: str, out_filepath: str,
         dtype, shape = pg.dtype, pg.shape
         npg = len(tif.series[0].pages)
 
+    chunk_size = tuple(chunk_size)
+
     # parse channel names
     if channel_names is None:
         channel_names = [str(i) for i in range(npg)]
@@ -44,23 +45,15 @@ def tiff2hdf5(in_filepath: str, out_filepath: str,
         raise ValueError('Got {} channel names but {} channels in {}.'
                 .format(len(channel_names), npg, in_filepath))
 
-    # loader function
-    def load(ch):
-        with tifffile.TiffFile(in_filepath) as tif:
-            return tif.series[0].pages[ch].asarray()
-    delayed_load = dask.delayed(load)
-
-    # load as dask array
-    arr_dict = {}
-    for i, c in enumerate(channel_names):
-        arr = da.from_delayed(delayed_load(i), shape=shape, dtype=dtype)
-        if chunk_size is not None:
-            arr_dict[c] = arr.rechunk(chunk_size)
-
-    # save to disk
+    # run
     if overwrite and os.path.isfile(out_filepath):
         os.remove(out_filepath)
-    da.to_hdf5(out_filepath, arr_dict)
+
+    with tifffile.TiffFile(in_filepath) as tif,\
+            h5py.File(out_filepath, 'w') as f:
+        for i, c in enumerate(channel_names):
+            f.create_dataset(name=c, data=tif.series[0].pages[i].asarray(),
+                    chunks=chunk_size)
 
 
 if __name__ == '__main__':
