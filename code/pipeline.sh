@@ -1,12 +1,11 @@
 #!/bin/bash
 
 # paths
-export CYCIF_OMETIF_FILEPATH="/path/to/img.ome.tif"
-export HE_OMETIF_FILEPATH="/path/to/img.ome.tif"
-export CYCIF_MARKER_FILEPATH="/path/to/markers.csv"
-export PYRAMID_FILEPATH="/path/to/pyramid.ome.tif"
-
-export WORK_DIRPATH="$PWD"
+export HE_OMETIF_FILEPATH="$1"
+export CYCIF_OMETIF_FILEPATH="$2"
+export CYCIF_MARKER_FILEPATH="$3"
+export PYRAMID_FILEPATH="$4"
+export WORK_DIRPATH="$5"
 
 # critical params
 export CYCIF_AF_CHANNELS="[DNA1,bg2a,bg3a,bg4a]"
