@@ -31,3 +31,4 @@ python "$CODE_DIRPATH/se_fit.py"\
     --moving_filepath $HE_TIFF_FILEPATH\
     --nres 4\
     --niter 1000
+mv "TransformParameters.0.txt" $PARAM_FILEPATH
