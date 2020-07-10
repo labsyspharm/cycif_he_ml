@@ -72,12 +72,12 @@ do
     echo "$WORK_DIRPATH/HE_${CHANNEL_NAME}.tif" >> $FILELIST_FILEPATH
 done
 
-python "$CODE_DIRPATH/prep_bfconvert.py"\
+python "$CODE_DIRPATH/bfconvert_prep.py"\
     --filelist_filepath $FILELIST_FILEPATH\
     --out_filepath $TMP_TIFF_FILEPATH\
 
 echo "run pyramid generation"
-bash bfconvert.sh\
+bash "/home/$(whoami)/bftools/bfconvert"\
     -noflat\
     -bigtiff\
     -overwrite\
