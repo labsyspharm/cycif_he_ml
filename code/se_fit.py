@@ -2,9 +2,14 @@ import SimpleITK as sitk
 import fire
 
 
-def se_fit(fixed_filepath: str, moving_filepath: str, out_filepath: str,
-        nres: int=4, niter: int=256):
-    '''
+def se_fit(
+    fixed_filepath: str,
+    moving_filepath: str,
+    out_filepath: str = None,
+    nres: int = 4,
+    niter: int = 256,
+):
+    """
     Register one image to another using intensity-based affine transformation
     with SimpleElastix library (C++ library with Python interface).
 
@@ -17,7 +22,7 @@ def se_fit(fixed_filepath: str, moving_filepath: str, out_filepath: str,
             computer memory. Default is 4 layers.
         niter: int [optional]
             Maximum number of iterations. Default is 256.
-    '''
+    """
     # load data
     fixed = sitk.ReadImage(fixed_filepath)
     moving = sitk.ReadImage(moving_filepath)
@@ -28,9 +33,9 @@ def se_fit(fixed_filepath: str, moving_filepath: str, out_filepath: str,
     img_filter.SetMovingImage(moving)
 
     # configure transformation
-    pm = sitk.GetDefaultParameterMap('affine')
-    pm['NumberOfResolutions'] = [str(nres)]
-    pm['MaximumNumberOfIterations'] = [str(niter)]
+    pm = sitk.GetDefaultParameterMap("affine")
+    pm["NumberOfResolutions"] = [str(nres)]
+    pm["MaximumNumberOfIterations"] = [str(niter)]
     vec = sitk.VectorOfParameterMap()
     vec.append(pm)
     img_filter.SetParameterMap(vec)
@@ -40,8 +45,9 @@ def se_fit(fixed_filepath: str, moving_filepath: str, out_filepath: str,
     out = img_filter.GetResultImage()
 
     # save output to disk
-    sitk.WriteImage(out, out_filepath)
+    if out_filepath is not None:
+        sitk.WriteImage(out, out_filepath)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     fire.Fire(se_fit)
