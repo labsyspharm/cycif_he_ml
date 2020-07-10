@@ -45,7 +45,7 @@ do
         --dtype $FINAL_DTYPE
 done
 
-echo "generate pyramid"
+echo "prepare for pyramid generation"
 cat $CYCIF_MARKER_FILEPATH | while read LINE
 do
     # save CyCIF images to individual TIFF
@@ -72,8 +72,18 @@ do
     echo "$WORK_DIRPATH/HE_${CHANNEL_NAME}.tif" >> $FILELIST_FILEPATH
 done
 
+python "$CODE_DIRPATH/prep_bfconvert.py"\
+    --filelist_filepath $FILELIST_FILEPATH\
+    --out_filepath $TMP_TIFF_FILEPATH\
+
 echo "run pyramid generation"
-python "$CODE_DIRPATH/make_pyramid.py"\
-    --in_filepaths $(cat $FILELIST_FILEPATH | sed "1d" | paste -sd ',')\
-    --out_filepath $PYRAMID_FILEPATH\
-    --tile_size 1024\
+bash bfconvert.sh\
+    -noflat\
+    -bigtiff\
+    -overwrite\
+    -tilex 1024\
+    -tiley 512\
+    -pyramid-scale 2\
+    -pyramid-resolutions 4\
+    $TMP_TIFF_FILEPATH\
+    $PYRAMID_FILEPATH
