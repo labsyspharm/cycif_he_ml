@@ -72,18 +72,10 @@ do
     echo "$WORK_DIRPATH/HE_${CHANNEL_NAME}.tif" >> $FILELIST_FILEPATH
 done
 
-python "$CODE_DIRPATH/bfconvert_prep.py"\
-    --filelist_filepath $FILELIST_FILEPATH\
-    --out_filepath $TMP_TIFF_FILEPATH\
+sed -i '1d' $FILELIST_FILEPATH
 
 echo "run pyramid generation"
-bash "/home/$(whoami)/bftools/bfconvert"\
-    -noflat\
-    -bigtiff\
-    -overwrite\
-    -tilex 1024\
-    -tiley 512\
-    -pyramid-scale 2\
-    -pyramid-resolutions 4\
-    $TMP_TIFF_FILEPATH\
-    $PYRAMID_FILEPATH
+python "${CODE_DIRPATH}/make_pyramid.py"\
+    --filelist_filepath $FILELIST_FILEPATH\
+    --out_filepath $PYRAMID_FILEPATH\
+    --tile_size 1024
