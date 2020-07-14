@@ -16,7 +16,7 @@ def make_pyramid(filelist_filepath: str, out_filepath: str, tile_size: int):
     name_list = [os.path.splitext(os.path.basename(fp))[0]\
             for fp in in_filepath_list]
 
-    ap_lib.main(
+    ashlar_pyramid.main(
         arr_gen(),
         channel_name_list=name_list,
         out_path=out_filepath,
