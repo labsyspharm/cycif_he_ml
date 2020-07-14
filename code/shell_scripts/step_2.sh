@@ -11,8 +11,8 @@ python "$CODE_DIRPATH/se_fit.py"\
     --fixed_filepath $CYCIF_TIFF_FILEPATH\
     --moving_filepath $HE_TIFF_FILEPATH\
     --out_filepath $TMP_FILEPATH\
-    --nres 4\
-    --niter 1000
+    --nres $AFFINE_NRES\
+    --niter $AFFINE_NITER
 mv "./TransformParameters.0.txt" $PARAM_FILEPATH
 
 

@@ -8,6 +8,8 @@ CODE_DIRPATH="/path"
 
 # critical params
 CYCIF_AF_CHANNELS="[DNA1,bg2a,bg3a,bg4a]"
+AFFINE_NRES=8
+AFFINE_NITER=10000
 
 # less critical params
 CHUNKSIZE="[1000,1000]"
