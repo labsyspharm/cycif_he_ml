@@ -59,3 +59,5 @@ python "${CODE_DIRPATH}/make_pyramid.py"\
     --filelist_filepath $FILELIST_FILEPATH\
     --out_filepath $PYRAMID_FILEPATH\
     --tile_size $PYRAMID_TILE_SIZE
+echo "final result available at:"
+echo $PYRAMID_FILEPATH
