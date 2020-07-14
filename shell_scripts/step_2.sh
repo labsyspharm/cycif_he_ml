@@ -17,7 +17,7 @@ mv "./TransformParameters.0.txt" $PARAM_FILEPATH
 
 
 echo "post-processing registration preview"
-python "$CODE_DIRPATH/se_preprocessing.py"\
+python "$CODE_DIRPATH/se_postrocessing.py"\
     --in_filepath $TMP_FILEPATH\
     --out_filepath $TMP_FILEPATH\
     --dtype "uint16"
