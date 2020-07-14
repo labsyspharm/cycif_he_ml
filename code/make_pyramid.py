@@ -2,7 +2,7 @@ import os
 
 import fire
 import tifffile
-import ap_lib
+import ashlar_pyramid
 
 
 def make_pyramid(filelist_filepath: str, out_filepath: str, tile_size: int):
