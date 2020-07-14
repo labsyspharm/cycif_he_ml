@@ -1,32 +1,12 @@
 #!/bin/bash
 
-# paths
-export HE_OMETIF_FILEPATH="$1"
-export CYCIF_OMETIF_FILEPATH="$2"
-export CYCIF_MARKER_FILEPATH="$3"
-export PYRAMID_FILEPATH="$4"
-export WORK_DIRPATH="$5"
-export CODE_DIRPATH="$6"
 
-# critical params
-export CYCIF_AF_CHANNELS="[DNA1,bg2a,bg3a,bg4a]"
+# load config
+CONFIG_FILEPATH="$1"
+source $CONFIG_FILEPATH
 
-# less critical params
-export CHUNKSIZE="[1000,1000]"
-export FINAL_DTYPE="uint16"
 
-# intermediate file paths
-export CYCIF_H5_FILEPATH="$WORK_DIRPATH/cycif.h5"
-export HE_RGB_H5_FILEPATH="$WORK_DIRPATH/he_rgb.h5"
-export HE_GRAY_H5_FILEPATH="$WORK_DIRPATH/he_gray.h5"
-export CYCIF_TIFF_FILEPATH="$WORK_DIRPATH/cycif.tif"
-export HE_TIFF_FILEPATH="$WORK_DIRPATH/he.tif"
-export TMP_TIFF_FILEPATH="$WORK_DIRPATH/tmp.tif"
-export PARAM_FILEPATH="$WORK_DIRPATH/TransformParameters.0.txt"
-export FILELIST_FILEPATH="$WORK_DIRPATH/filelist.txt"
-
-echo "transform images in batch"
-RGB=(r g b)
+echo "transform images according to fitted transformation"
 for CHANNEL_NAME in "${RGB[@]}"
 do
     python "$CODE_DIRPATH/se_prep.py"\
@@ -45,7 +25,8 @@ do
         --dtype $FINAL_DTYPE
 done
 
-echo "prepare for pyramid generation"
+
+echo "unbundle CyCIF images"
 cat $CYCIF_MARKER_FILEPATH | while read LINE
 do
     # save CyCIF images to individual TIFF
@@ -57,25 +38,24 @@ do
         --overwrite "True"
 done
 
-echo "" > $FILELIST_FILEPATH
 
+echo "prepare file list"
+echo "" > $FILELIST_FILEPATH
 cat $CYCIF_MARKER_FILEPATH | while read LINE
 do
     # record file list
     echo "$WORK_DIRPATH/CYCIF_${LINE}.tif" >> $FILELIST_FILEPATH
 done
-
-
 for CHANNEL_NAME in "${RGB[@]}"
 do
     # record file list
     echo "$WORK_DIRPATH/HE_${CHANNEL_NAME}.tif" >> $FILELIST_FILEPATH
 done
-
 sed -i '1d' $FILELIST_FILEPATH
+
 
 echo "run pyramid generation"
 python "${CODE_DIRPATH}/make_pyramid.py"\
     --filelist_filepath $FILELIST_FILEPATH\
     --out_filepath $PYRAMID_FILEPATH\
-    --tile_size 1024
+    --tile_size $PYRAMID_TILE_SIZE
