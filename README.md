@@ -10,8 +10,9 @@ Multiplex biomedical imaging technology like CyCIF contains rich information in 
 - [ ] Infer texture information (derived from H&E images) from CyCIF images  
 
 
-![](scheme.png)
+![](figures/scheme.png)
 Fig: Example machine learning scheme, predicting B cell fractions using H&E images along, with labels generated from CyCIF image of adjacent sections. Idea from Ru.
 
 ## Resources
+* Install SimpleElastix on HMS O2 server ([gist](https://gist.github.com/hungyiwu/72f47365a4b3e9d0626467a9fd0aab9d))
 * DeepCell ([website](https://deepcell.org))
