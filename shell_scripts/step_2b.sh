@@ -7,7 +7,7 @@ source $CONFIG_FILEPATH
 
 
 echo "post-processing registration preview"
-python "$CODE_DIRPATH/se_postrocessing.py"\
+python "$CODE_DIRPATH/se_postprocessing.py"\
     --in_filepath $TMP_TIFF_FILEPATH\
     --out_filepath $TMP_TIFF_FILEPATH\
     --dtype "uint16"
