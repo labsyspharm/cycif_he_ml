@@ -14,7 +14,8 @@ python "$CODE_DIRPATH/se_postprocessing.py"\
 
 
 echo "construct pyramid for preview on OMERO server"
-echo "$TMP_TIFF_FILEPATH" > $TMP_FILELIST_FILEPATH
+echo "$CYCIF_TIFF_FILEPATH" > $TMP_FILELIST_FILEPATH
+echo "$TMP_TIFF_FILEPATH" >> $TMP_FILELIST_FILEPATH
 python "$CODE_DIRPATH/make_pyramid.py"\
     --filelist_filepath $TMP_FILELIST_FILEPATH\
     --out_filepath $VIZ_REG_FILEPATH\
