@@ -17,7 +17,7 @@ echo "construct pyramid for preview on OMERO server"
 echo "$TMP_TIFF_FILEPATH" > $TMP_FILELIST_FILEPATH
 python "$CODE_DIRPATH/make_pyramid.py"\
     --filelist_filepath $TMP_FILELIST_FILEPATH\
-    --out_filepath $VIS_REG_FILEPATH\
+    --out_filepath $VIZ_REG_FILEPATH\
     --tile_size $PYRAMID_TILE_SIZE
 echo "preview of registration result available at:"
 echo $VIZ_REG_FILEPATH
