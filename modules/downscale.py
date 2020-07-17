@@ -39,7 +39,7 @@ def downscale(in_filepath: str, out_filepath: str,
 
     for name in f_in.keys():
         arr_in = da.from_array(f_in[name])
-        arr_out = da.map_blocks(downscale, arr_in, dtype=arr_in.dtype)
+        arr_out = da.map_blocks(fn, arr_in, dtype=arr_in.dtype)
         arr_out.compute_chunk_sizes()
         d_out = f_out.create_dataset(name, shape=arr_out.shape,
                 chunks=chunk_size, dtype=arr_out.dtype)
