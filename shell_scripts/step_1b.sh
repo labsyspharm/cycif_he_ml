@@ -31,7 +31,8 @@ python "$CODE_DIRPATH/se_prep.py"\
 
 echo "transform by anchor"
 python "$CODE_DIRPATH/transform_by_anchor.py"\
-    --src_filepath $HE_TIFF_FILEPATH\
+    --template_filepath $CYCIF_TIFF_FILEPATH\
+    --src_filepath $TMP_TIFF_FILEPATH\
     --anchor_filepath $ANCHOR_FILEPATH\
     --out_filepath $HE_TIFF_FILEPATH\
     --overwrite "True"
