@@ -11,9 +11,15 @@ for CHANNEL_NAME in "${RGB[@]}"
 do
     python "$CODE_DIRPATH/se_prep.py"\
         --in_filepath $HE_RGB_H5_FILEPATH\
-        --out_filepath $TMP_TIFF_FILEPATH\
+        --out_filepath $TMP2_TIFF_FILEPATH\
         --channel_names "[$CHANNEL_NAME]"\
         --flip "False"\
+        --overwrite "True"
+    python "$CODE_DIRPATH/transform_by_anchor.py"\
+        --template_filepath $CYCIF_TIFF_FILEPATH\
+        --src_filepath $TMP2_TIFF_FILEPATH\
+        --anchor_filepath $ANCHOR_FILEPATH\
+        --out_filepath $TMP_TIFF_FILEPATH\
         --overwrite "True"
     python "$CODE_DIRPATH/se_transform.py"\
         --param_filepath $PARAM_FILEPATH\
