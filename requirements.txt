@@ -1,5 +1,5 @@
 cycler==0.10.0
-dask==2.20.0
+dask==2021.10.0
 dask-image==0.3.0
 decorator==4.4.2
 fire==0.3.1
